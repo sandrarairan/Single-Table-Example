@@ -1,0 +1,77 @@
+---
+title: "Single Table Example"
+author: "Sandra Rairán"
+date: "10/26/2020"
+output: html_document
+---
+
+## Create a data table, use reactable()
+
+* install.packages("reactable") 
+* library(reactable)
+
+
+### Dataset mtcars
+
+A data frame with 32 observations on 11 (numeric) variables.
+
+* [, 1]	mpg	Miles/(US) gallon
+* [, 2]	cyl	Number of cylinders
+* [, 3]	disp	Displacement (cu.in.)
+* [, 4]	hp	Gross horsepower
+* [, 5]	drat	Rear axle ratio
+* [, 6]	wt	Weight (1000 lbs)
+* [, 7]	qsec	1/4 mile time
+* [, 8]	vs	Engine (0 = V-shaped, 1 = straight)
+* [, 9]	am	Transmission (0 = automatic, 1 = manual)
+* [,10]	gear	Number of forward gears
+* [,11]	carb	Number of carburetors
+
+## Code documentation
+
+* `green_pal <- function(x) rgb(colorRamp(c("#829F7A", "#1A9625"))(x), maxColorValue = 255)`
+These functions return functions that interpolate a set of given colors to create new color palettes
+
+* Sort the HP column in order, and place the highest value in dark green
+
+  `list(hp = "desc"), columns = list(hp = colDef(style = function(value) ` 
+  `{normalized <- (value - min(data$hp)) / (max(data$hp) - min(data$hp)) color <- green_pal(normalized) list(background = color)` 
+  
+* Make dataset columns filterable `reactable(data, filterable = TRUE)`
+
+* Broup By  
+  am Transmission (0 = automatic, 1 = manual)
+
+ `reactable(data, groupBy = c("am"))`
+ 
+* Show pagination  `reactable(data, showPagination = TRUE)`
+
+* Highlight rows on hover `reactable(data, highlight = TRUE)`
+
+### Repository GitHub
+
+[Repository](https://github.com/sandrarairan/Single-Table-Example)
+
+## Example table
+
+
+```{r t,echo=TRUE}
+
+#install.packages("reactable") 
+library(reactable)
+data <- mtcars[1:11, ]
+green_pal <- function(x) rgb(colorRamp(c("#829F7A", "#1A9625"))(x), maxColorValue = 255)
+
+
+reactable(data,groupBy = c("am"), filterable = TRUE,showPagination = TRUE,highlight = TRUE,defaultSorted = list(hp = "desc"), columns = list(
+  hp = colDef(style = function(value) {
+    normalized <- (value - min(data$hp)) / (max(data$hp) - min(data$hp))
+    color <- green_pal(normalized)
+    list(background = color)
+  })
+))
+ 
+```
+
+
+
